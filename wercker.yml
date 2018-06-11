@@ -1,0 +1,61 @@
+box:
+  id: golang
+build:
+  steps:
+    - internal/docker-build:
+        dockerfile: Dockerfile
+        image-name: $OKE_REGISTRY/$OKE_TENANCY/$OKE_REPOSITORY/$WERCKER_APPLICATION_NAME
+
+push-to-releases:
+  steps:
+    # Push to OCI Registry
+    - internal/docker-push:
+        tag: $WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
+        cmd: /pipeline/source/GoRun
+        ports: "8001"
+        username: $OCI_USERNAME
+        password: $OCI_PASSWORD
+        registry: $OCI_REGISTRY
+
+deploy-to-oke:
+  box:
+        id: alpine
+        cmd: /bin/sh
+  steps:
+    - bash-template
+    
+    - script:
+        name: "Visualise Kubernetes config"
+        code: cat kubernetes-deployment.yml
+    
+    - kubectl:
+        name: delete namespace
+        server: $KUBERNETES_MASTER
+        token: $KUBERNETES_TOKEN
+        insecure-skip-tls-verify: true
+        command: delete namespace $APP_FLIGHT_NAMESPACE --ignore-not-found=true
+        
+    - script:
+        name: wait to delete namespace
+        code: sleep 30
+        
+    - kubectl:
+        name: create namespace    
+        server: $KUBERNETES_MASTER
+        token: $KUBERNETES_TOKEN
+        insecure-skip-tls-verify: true
+        command: create namespace $APP_FLIGHT_NAMESPACE
+        
+    - kubectl:
+        name: create OCR secret
+        server: $KUBERNETES_MASTER
+        token: $KUBERNETES_TOKEN
+        insecure-skip-tls-verify: true
+        command: create secret docker-registry wrelease --docker-server=wcr.io --docker-username=$WERCKER_APPLICATION_OWNER_NAME --docker-password=$WERCKER_TOKEN --docker-email=${WERCKER_APPLICATION_OWNER_NAME}@mail.com --namespace=$APP_FLIGHT_NAMESPACE
+        
+    - kubectl:
+        name: create deplyoment
+        server: $KUBERNETES_MASTER
+        token: $KUBERNETES_TOKEN
+        insecure-skip-tls-verify: true
+        command: create -f $WERCKER_ROOT/kubernetes-deployment.yml --namespace=$APP_FLIGHT_NAMESPACE
