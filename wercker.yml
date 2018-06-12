@@ -4,18 +4,22 @@ build:
   steps:
     - internal/docker-build:
         dockerfile: Dockerfile
-        image-name: $OKE_REGISTRY/$OKE_TENANCY/$OKE_REPOSITORY/$WERCKER_APPLICATION_NAME
+        image-name: $OKE_REPOSITORY/$WERCKER_APPLICATION_NAME
+    - script:
+        name: check
+        code: |
+            pwd
+            ls
 
 push-to-releases:
   steps:
     # Push to OCI Registry
     - internal/docker-push:
         tag: $WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
-        cmd: /pipeline/source/GoRun
-        ports: "8001"
-        username: $OCI_USERNAME
-        password: $OCI_PASSWORD
-        registry: $OCI_REGISTRY
+        username: $OKE_USERNAME
+        password: $OKE_PASSWORD
+        repository: $OKE_REPOSITORY/$WERCKER_APPLICATION_NAME
+        registry: $OKE_REGISTRY
 
 deploy-to-oke:
   box:
