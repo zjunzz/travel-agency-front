@@ -6,7 +6,7 @@ define(['knockout', 'ojs/ojcore', 'utils', 'jquery','ojs/ojknockout', 'ojs/ojmas
                 $.ajax({
                     type: "POST",
                     data: "JSON",
-                    url: "http://10.182.205.240:30098/login",
+                    url: "http://microservice.bluezd.info:30098/login",
                     headers: {  
                     'Access-Control-Allow-Origin': '*',
                     'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, DELETE, PUT',

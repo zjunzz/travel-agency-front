@@ -6,7 +6,7 @@ define(['ojs/ojcore', 'knockout', 'utils', 'jquery', 'data/data', 'ojs/ojrouter'
         function (oj, ko, utils, $, data)
         {
             function GetFlights(self){
-                $.getJSON('http://10.182.205.240:30098/flights').done(function(data){
+                $.getJSON('http://microservice.bluezd.info:30098/flights').done(function(data){
                     self.allPeople = data;
                     self.model = oj.Model.extend({
                         idAttribute: 'id'
