@@ -2,7 +2,6 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: ta-front
-  namespace: travel-agency
   labels:
     run: ta-front
 spec:
@@ -18,7 +17,7 @@ spec:
         run: ta-front
     spec:
       containers:
-      - image: bluezd/front:oci 
+      - image: $OKE_REPOSITORY/$WERCKER_APPLICATION_NAME:$WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
         #imagePullPolicy: IfNotPresent 
         imagePullPolicy: Always 
         name: ta-front
@@ -26,12 +25,13 @@ spec:
         - containerPort: 8000 
           protocol: TCP
       restartPolicy: Always
+      imagePullSecrets:
+        - name: ocirsecret
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: ta-front-svc
-  namespace: travel-agency
   #spec:
   #  type: NodePort
   #  ports:
@@ -54,7 +54,6 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: ta-front-ing
-  namespace: travel-agency
   annotations:
     kubernetes.io/ingress.class: 'nginx'
     ingress.kubernetes.io/add-base-url: 'true'

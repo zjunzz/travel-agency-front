@@ -44,7 +44,7 @@ deploy-to-oke:
         server: $KUBERNETES_MASTER
         token: $KUBERNETES_TOKEN
         insecure-skip-tls-verify: true
-        command: delete namespace $APP_FLIGHT_NAMESPACE --ignore-not-found=true
+        command: delete namespace $APP_FRONT_NAMESPACE --ignore-not-found=true
         
     - script:
         name: wait to delete namespace
@@ -55,18 +55,18 @@ deploy-to-oke:
         server: $KUBERNETES_MASTER
         token: $KUBERNETES_TOKEN
         insecure-skip-tls-verify: true
-        command: create namespace $APP_FLIGHT_NAMESPACE
-        
+        command: create namespace $APP_FRONT_NAMESPACE
+
     - kubectl:
         name: create OCR secret
         server: $KUBERNETES_MASTER
         token: $KUBERNETES_TOKEN
         insecure-skip-tls-verify: true
-        command: create secret docker-registry wrelease --docker-server=wcr.io --docker-username=$WERCKER_APPLICATION_OWNER_NAME --docker-password=$WERCKER_TOKEN --docker-email=${WERCKER_APPLICATION_OWNER_NAME}@mail.com --namespace=$APP_FLIGHT_NAMESPACE
+        command: create secret docker-registry ocirsecret --docker-server=iad.ocir.io --docker-username=$OKE_USERNAME --docker-password=$OKE_PASSWORD --docker-email=${WERCKER_APPLICATION_OWNER_NAME}@mail.com --namespace=$APP_FRONT_NAMESPACE
         
     - kubectl:
         name: create deplyoment
         server: $KUBERNETES_MASTER
         token: $KUBERNETES_TOKEN
         insecure-skip-tls-verify: true
-        command: create -f $WERCKER_ROOT/kubernetes-deployment.yml --namespace=$APP_FLIGHT_NAMESPACE
+        command: create -f $WERCKER_ROOT/kubernetes-deployment.yml --namespace=$APP_FRONT_NAMESPACE
