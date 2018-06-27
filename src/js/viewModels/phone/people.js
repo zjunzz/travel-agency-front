@@ -6,7 +6,7 @@ define(['ojs/ojcore', 'knockout', 'utils', 'jquery', 'data/data', 'ojs/ojrouter'
         function (oj, ko, utils, $, data)
         {
             function GetFlights(self){
-                $.getJSON('http://129.213.15.68/flights').done(function(data){
+                $.getJSON('http://129.213.143.206/flights').done(function(data){
                     self.allPeople = data;
                     self.model = oj.Model.extend({
                         idAttribute: 'id'
