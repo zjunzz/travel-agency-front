@@ -10,7 +10,7 @@ COPY *.json /nodeApp/
 WORKDIR /nodeApp
 
 RUN npm install grunt -g && \
-    npm install &&
+    npm install
 
 EXPOSE 8000
 
