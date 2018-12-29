@@ -8,8 +8,9 @@ build:
             pwd
             npm install grunt -g
             npm install
-            ls
             grunt build
+            mv web public
+            ls -l
     - script:
         name: check
         code: |
@@ -21,7 +22,7 @@ push-to-releases:
     - internal/docker-push:
         tag: $WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
         ports: "8000"
-        cmd: /pipeline/source/node_modules/grunt/bin/grunt serve
+        cmd: npm start
         working-dir: /pipeline/source/
         username: $OKE_USERNAME
         password: $OKE_PASSWORD
