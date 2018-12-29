@@ -2,10 +2,7 @@ FROM node:8.9.4
 
 RUN mkdir -p /nodeApp
 
-COPY Gruntfile.js /nodeApp/Gruntfile.js
-COPY src /nodeApp/src
-COPY scripts /nodeApp/scripts
-COPY *.json /nodeApp/
+COPY . /nodeApp/
 
 WORKDIR /nodeApp
 
