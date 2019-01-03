@@ -16,7 +16,7 @@ build:
         code: |
             ls
 
-push-to-releases:
+push-to-releases-default:
   steps:
     # Push to OCI Registry
     - internal/docker-push:
@@ -29,7 +29,7 @@ push-to-releases:
         repository: $OKE_REPOSITORY/$WERCKER_APPLICATION_NAME
         registry: $OKE_REGISTRY
 
-deploy-to-oke:
+deploy-to-oke-default:
   box:
         id: alpine
         cmd: /bin/sh
@@ -45,11 +45,11 @@ deploy-to-oke:
         server: $KUBERNETES_MASTER
         token: $KUBERNETES_TOKEN
         insecure-skip-tls-verify: true
-        command: delete -f $WERCKER_ROOT/kubernetes-deployment.yml --namespace=$APP_FRONT_NAMESPACE --ignore-not-found=true
+        command: delete -f $WERCKER_ROOT/kubernetes-deployment.yml --ignore-not-found=true
 
     - kubectl:
         name: create deplyoment
         server: $KUBERNETES_MASTER
         token: $KUBERNETES_TOKEN
         insecure-skip-tls-verify: true
-        command: create -f $WERCKER_ROOT/kubernetes-deployment.yml --namespace=$APP_FRONT_NAMESPACE
+        command: create -f $WERCKER_ROOT/kubernetes-deployment.yml
