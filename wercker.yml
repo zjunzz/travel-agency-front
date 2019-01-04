@@ -47,6 +47,10 @@ deploy-to-oke-default:
         insecure-skip-tls-verify: true
         command: delete -f $WERCKER_ROOT/kubernetes-deployment.yml --ignore-not-found=true
 
+    - script:
+        name: wait to delete deployment
+        code: sleep 60
+
     - kubectl:
         name: create deplyoment
         server: $KUBERNETES_MASTER
