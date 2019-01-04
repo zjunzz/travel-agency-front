@@ -36,9 +36,8 @@ spec:
     type: LoadBalancer
     ports:
     - name: http
-      port: 9004
+      port: 80
       targetPort: 8000
-      nodePort: 30008
       protocol: TCP
     selector:
       run: ta-front
