@@ -30,7 +30,8 @@ app.post('/login', function(req, res) {
   console.log("req", JSON.stringify(req.body))
   const options = {
     method: 'POST',
-    uri: 'http://ta-login.travel-agency.svc.cluster.local:9001/login',
+    //uri: 'http://ta-login.travel-agency.svc.cluster.local:9001/login',
+    uri: 'http://ta-login:9001/login',
     encoding: null,
     headers: {
       'Content-type': 'application/json'
@@ -55,7 +56,8 @@ app.get('/flights', function(req, res) {
   console.log("calling flights");
   const options = {
     method: 'GET',
-    uri: 'http://ta-flight.travel-agency.svc.cluster.local:9002/flights',
+    //uri: 'http://ta-flight.travel-agency.svc.cluster.local:9002/flights',
+    uri: 'http://ta-flight:9002/flights',
     encoding: null,
     headers: {
       'Content-type': 'application/json'
@@ -78,7 +80,8 @@ app.get('/hotels', function(req, res) {
   console.log("calling hotels");
   const options = {
     method: 'GET',
-    uri: 'http://ta-hotel.travel-agency.svc.cluster.local:9003/hotels',
+    //uri: 'http://ta-hotel.travel-agency.svc.cluster.local:9003/hotels',
+    uri: 'http://ta-hotel:9003/hotels',
     encoding: null,
     headers: {
       'Content-type': 'application/json'
