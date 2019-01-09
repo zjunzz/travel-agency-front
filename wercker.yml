@@ -49,7 +49,7 @@ deploy-to-oke-default:
 
     - script:
         name: wait to delete deployment
-        code: sleep 60
+        code: sleep 61
 
     - kubectl:
         name: create deplyoment
